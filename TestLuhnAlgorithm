@@ -1,0 +1,13 @@
+public class TestLuhnAlgorithm {
+    @Test
+    public void testVerifySAID(){
+        LuhnAlgorithm luhn=new LuhnAlgorithm();
+        String id="9705045215089";
+        Assert.assertEquals("Valid SA ID", luhn.verifyIfSAIDcontainsNumbersOnly(id));
+        Assert.assertEquals("valid month and day", luhn.verifyMonthAndDay(id));
+        Assert.assertEquals("Male", luhn.determineGender(id));
+        Assert.assertEquals("SA Citizen", luhn.determineCitizen(id));
+        Assert.assertEquals("Valid Last Sec Num", luhn.checkTheLastSecNumberIfIs8(id));
+        Assert.assertEquals("Valid SA ID", luhn.verifyTheLastDigit(id));
+    }
+}
