@@ -1,116 +1,89 @@
 public class LuhnAlgorithm {
     
+    int sumNumsInOddFields=0;
+    int count=0;
+    int result=0;
+    String subNumbsInEvenFields="";
+    String status="Invalid SA ID";
     public String verifyIfSAIDcontainsNumbersOnly(String id){
-        int count=0;
+        
         if(id.length()==13){
-            
-          //Check if id contains numbers only
-          for(int i=0; i<id.length();i++){
-              char checkIfDigitsOnly=id.charAt(i);
-              if(Character.isDigit(checkIfDigitsOnly)){
+           IntStream.range(0, id.length()).forEach(i->{
+                char checkIfDigitsOnly=id.charAt(i);
+                 if(Character.isDigit(checkIfDigitsOnly)){
                   count++;
               }
-          }
-          //---End of checking---
-          if(count==id.length())
-            return "Valid SA ID";
-          else
-              return "Invalid SA ID";
-        }
-        
-        else
-            return "Invalid SA ID";
-    }
-    public String verifyMonthAndDay(String id){
-        String subMonth=id.substring(2,4);
-        String subDay=id.substring(4,6);
+            });
+          
+         if(count==id.length()){
+             String subMonth=id.substring(2,4);
+             String subDay=id.substring(4,6);
         
         int month=Integer.parseInt(subMonth);
         int day=Integer.parseInt(subDay);
         
         if(month>=01 && month<=12){
-           if( day>=01 && day<=31)
-               return "valid month and day";
-           else
-               return "invalid month/day";
-        }
-        else
-            return "invalid month or day";
-    }
-    public String determineGender(String id){
-        String subGender=id.substring(6, 10);
-        int gender=Integer.parseInt(subGender);
-        if(gender<5000)
-           return "Female";
-        else
-            return"Male";
-    }
-    public String determineCitizen(String id){
-        
-        String subCitizen=id.substring(10,11);
-        int citizen=Integer.parseInt(subCitizen);
+           if( day>=01 && day<=31){
+             String subCitizen=id.substring(10,11);
+          int citizen=Integer.parseInt(subCitizen);
         
         if(citizen==0 || citizen==1){
-            if(citizen==0)
-                return "SA Citizen";
-            else
-                return "Permanent Citizen";
-        }
-        else
-            return "Invalid citizen number";
+            String subLastSecNum=id.substring(11, 12);
+            int lastSecNum=Integer.parseInt(subLastSecNum);
             
-    }
-    public String checkTheLastSecNumberIfIs8(String id){
-        String subLastSecNum=id.substring(11, 12);
-        
-        int lastSecNum=Integer.parseInt(subLastSecNum);
-        
-        if(lastSecNum==8)
-            return "Valid Last Sec Num";
-        else
-            return "Invalid Last Sec Num";
-    }
-    public String verifyTheLastDigit(String id){
-        
-        int sumNumsInOddFields=0;
-        String subNumbsInEvenFields="";
-        
-        for(int i=0; i<id.length(); i++){
+            if(lastSecNum==8){
+                
+            IntStream.range(0,id.length()).forEach( (i)->{
             if(i%2==0){
-                if(i<(id.length()-1)){   
-                sumNumsInOddFields+=Integer.parseInt(String.valueOf(id.charAt(i)));//first answer
+                if(i<(id.length()-1)){
+                   sumNumsInOddFields+=Integer.parseInt(String.valueOf(id.charAt(i)));
                 }
             }
             else
-                subNumbsInEvenFields+=id.charAt(i);//second answer
-        }
+               subNumbsInEvenFields+=id.charAt(i);
+        });
+            
         int numbsInEvenFields=Integer.parseInt(String.valueOf(subNumbsInEvenFields));
         
-        
-        //third answer
         int multiplyNumbsInEvenFieldsBy2=numbsInEvenFields*2;
         String multipliedNumbs=String.valueOf(multiplyNumbsInEvenFieldsBy2);
-        //fourth answer
-        int result=0;
-        for(int i=0; i<multipliedNumbs.length(); i++){
-            result+=Integer.parseInt(String.valueOf(multipliedNumbs.charAt(i)));
-        }
-        //Sum first answer and fourth answer
-        int sumOfFirstAndForth=sumNumsInOddFields+result; //fith answer
         
-        //conver fith answer to String
-        //We need the second number from it
+        IntStream.range(0,multipliedNumbs.length()).forEach(i->{
+            result+=Integer.parseInt(String.valueOf(multipliedNumbs.charAt(i)));
+        });
+        
+        int sumOfFirstAndForth=sumNumsInOddFields+result;
+        
         String subOfFith=String.valueOf(sumOfFirstAndForth);
         int secNumFromAnaswer=Integer.parseInt(String.valueOf(subOfFith.charAt(1)));
-        //subtract the "secNumFromAnaswer" from 10
-        //The answer must match the last number of the ID
+        
         int finalAnswer=10-secNumFromAnaswer;
         
-        //System.out.println(finalAnswer);
-        if(finalAnswer==Integer.parseInt(String.valueOf(id.charAt(12))))
-            return "Valid SA ID";
+        status= (finalAnswer==Integer.parseInt(String.valueOf(id.charAt(12))))?
+                "Valid SA ID":"Invalid SA ID";
+            }
+            else
+                return status;
+        }
         else
-            return"Invalid SA ID";
+             return status;
         
-    }
+              }
+           else
+               return status;
+           }
+           else{
+               return status;
+           }
+          
+        }
+         else{
+             return status;
+         }
+         
+         return status;
+        }
+        else
+            return status;
+    } 
 }
